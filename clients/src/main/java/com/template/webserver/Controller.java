@@ -42,8 +42,15 @@ public class Controller {
     private final static Logger logger = LoggerFactory.getLogger(Controller.class);
     private final Party ourIdentity;
 
+    // Used when running local Spring Boot webserver
     public Controller(NodeRPCConnection rpc) {
         this.proxy = rpc.proxy;
+        this.ourIdentity = proxy.nodeInfo().getLegalIdentities().get(0);
+    }
+
+    // Used when running node's embedded webserver in the cloud
+    public Controller(CordaRPCOps rpc) {
+        this.proxy = rpc;
         this.ourIdentity = proxy.nodeInfo().getLegalIdentities().get(0);
     }
 
