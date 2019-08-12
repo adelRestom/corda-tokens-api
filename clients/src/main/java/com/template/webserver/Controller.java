@@ -59,7 +59,7 @@ public class Controller {
      */
     @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
     public HashMap<String, String> whoami() {
-        HashMap<String, String> myIdMap = new HashMap<>();
+        HashMap<String, String> myIdMap = new HashMap<String, String>();
         myIdMap.put("me", ourIdentity.getName().toString());
         return myIdMap;
     }
