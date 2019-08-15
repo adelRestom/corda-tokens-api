@@ -40,18 +40,23 @@ springBoot {
 
 task runPartyAServer(type: JavaExec, dependsOn: jar) {
     classpath = sourceSets.main.runtimeClasspath
-    main = 'com.template.webserver.Starter'
+    main = 'com.template.webserver.Server'
     args '--server.port=50005', '--config.rpc.host=localhost', '--config.rpc.port=10006', '--config.rpc.username=user1', '--config.rpc.password=test'
 }
 
 task runPartyBServer(type: JavaExec, dependsOn: jar) {
     classpath = sourceSets.main.runtimeClasspath
-    main = 'com.template.webserver.Starter'
+    main = 'com.template.webserver.Server'
     args '--server.port=50006', '--config.rpc.host=localhost', '--config.rpc.port=10009', '--config.rpc.username=user1', '--config.rpc.password=test'
 }
 
 task runPartyCServer(type: JavaExec, dependsOn: jar) {
     classpath = sourceSets.main.runtimeClasspath
-    main = 'com.template.webserver.Starter'
+    main = 'com.template.webserver.Server'
     args '--server.port=50007', '--config.rpc.host=localhost', '--config.rpc.port=10003', '--config.rpc.username=user1', '--config.rpc.password=test'
+}
+
+bootJar {
+    baseName = "corda-webserver"
+    version = ""
 }
