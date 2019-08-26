@@ -42,15 +42,8 @@ public class Controller {
     private final static Logger logger = LoggerFactory.getLogger(Controller.class);
     private final Party ourIdentity;
 
-    // Used when running local Spring Boot webserver
     public Controller(NodeRPCConnection rpc) {
         this.proxy = rpc.proxy;
-        this.ourIdentity = proxy.nodeInfo().getLegalIdentities().get(0);
-    }
-
-    // Used when running node's embedded webserver in the cloud
-    public Controller(CordaRPCOps rpc) {
-        this.proxy = rpc;
         this.ourIdentity = proxy.nodeInfo().getLegalIdentities().get(0);
     }
 
@@ -71,9 +64,9 @@ public class Controller {
                  headers = "Content-Type=application/x-www-form-urlencoded")
     public ResponseEntity<String> issueMyToken(HttpServletRequest request){
         // TO-DO: Change to double instead of Long (Amount only accepts Long; needs research)
-        Long amount = Long.parseLong(request.getParameter("amount"));
-        if (amount <= 0 ) {
-            return ResponseEntity.badRequest().body("Query parameter 'amount' must be non-negative.\n");
+        Long quantity = Long.parseLong(request.getParameter("quantity"));
+        if (quantity <= 0 ) {
+            return ResponseEntity.badRequest().body("Query parameter 'quantity' must be non-negative.\n");
         }
 
         String partyName = request.getParameter("partyName");
@@ -88,7 +81,7 @@ public class Controller {
 
         try {
             SignedTransaction signedTx  = proxy.startTrackedFlowDynamic(
-                    ExampleFlowWithFixedToken.class,amount, otherParty).getReturnValue().get();
+                    ExampleFlowWithFixedToken.class, quantity, otherParty).getReturnValue().get();
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(String.format("Transaction id %s committed to ledger.\n", signedTx.getId()));
         }
